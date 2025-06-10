@@ -3,7 +3,7 @@ use std::io;
 
 fn main() -> Result<(), io::Error> {
     let stdin = io::stdin();
-    let mut aligner = alignby::Aligner::new("=");
+    let mut aligner = aligner::Aligner::new("=");
 
     for (i, maybe_line) in stdin.lines().enumerate() {
         aligner.add_line(maybe_line?, i);
@@ -17,4 +17,4 @@ fn main() -> Result<(), io::Error> {
 }
 
 
-mod alignby;
+mod aligner;

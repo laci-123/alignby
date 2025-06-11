@@ -68,3 +68,7 @@ struct Line {
     number: usize,
     delimiter_index: usize,
 }
+
+
+#[cfg(test)]
+mod tests;

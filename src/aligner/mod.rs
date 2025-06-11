@@ -27,40 +27,18 @@ impl Aligner {
         });
     }
 
-    pub fn aligned_lines<'a>(&'a self) -> AlignedLinesIterator<'a> {
-        AlignedLinesIterator {
-            aligner: self,
-            index: 0
-        }
-    }
-}
-
-
-pub struct AlignedLinesIterator<'a> {
-    aligner: &'a Aligner,
-    index: usize,
-}
-
-impl<'a> Iterator for AlignedLinesIterator<'a> {
-    type Item = String;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        if self.index < self.aligner.lines.len() {
-            let line = &self.aligner.lines[self.index];
-            self.index += 1;
+    pub fn aligned_lines(self) -> impl Iterator<Item = String> {
+        self.lines.into_iter().map(move |line| {
             if let Some(delimiter_index) = line.delimiter_index {
-                let padding_length = self.aligner.max_index - delimiter_index;
+                let padding_length = self.max_index - delimiter_index;
                 let first_half     = &line.text[..delimiter_index];
                 let second_half    = &line.text[delimiter_index..];
-                Some(format!("{}{}{}", first_half, " ".repeat(padding_length), second_half))
+                format!("{}{}{}", first_half, " ".repeat(padding_length), second_half)
             }
             else {
-                Some(line.text.clone())
+                line.text
             }
-        }
-        else {
-            None
-        }
+        })
     }
 }
 

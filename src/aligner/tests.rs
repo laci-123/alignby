@@ -30,6 +30,26 @@ fn delimiter_not_in_input() {
 }
 
 #[test]
+fn empty_delimiter() {
+    // If the delimiter is the empty string
+    // then the output is identical to the input.
+    let mut aligner = Aligner::new("");
+    aligner.add_line(String::from("cat dog"));
+    aligner.add_line(String::from("elephant     giraffe"));
+    aligner.add_line(String::from("123456"));
+    aligner.add_line(String::from("árvíztűrő tükörfúrógép"));
+    aligner.add_line(String::from(""));
+
+    let mut it = aligner.aligned_lines();
+    assert_eq!(it.next(), Some(String::from("cat dog")));
+    assert_eq!(it.next(), Some(String::from("elephant     giraffe")));
+    assert_eq!(it.next(), Some(String::from("123456")));
+    assert_eq!(it.next(), Some(String::from("árvíztűrő tükörfúrógép")));
+    assert_eq!(it.next(), Some(String::from("")));
+    assert_eq!(it.next(), None);
+}
+
+#[test]
 fn simple_delimiter() {
     let mut aligner = Aligner::new("-");
     aligner.add_line(String::from("cat-dog"));
@@ -37,6 +57,7 @@ fn simple_delimiter() {
     aligner.add_line(String::from("123 - 456"));
     aligner.add_line(String::from("- árvíztűrő tükörfúrógép"));
     aligner.add_line(String::from("-"));
+    aligner.add_line(String::from("xyz-"));
 
     let mut it = aligner.aligned_lines();
     assert_eq!(it.next(), Some(String::from("cat      -dog")));
@@ -44,6 +65,7 @@ fn simple_delimiter() {
     assert_eq!(it.next(), Some(String::from("123      - 456")));
     assert_eq!(it.next(), Some(String::from("         - árvíztűrő tükörfúrógép")));
     assert_eq!(it.next(), Some(String::from("         -")));
+    assert_eq!(it.next(), Some(String::from("xyz      -")));
     assert_eq!(it.next(), None);
 }
 
@@ -73,6 +95,7 @@ fn mulitcharacter_delimiter() {
     aligner.add_line(String::from("123-->456"));
     aligner.add_line(String::from("--> árvíztűrő-tükörfúrógép"));
     aligner.add_line(String::from("-->"));
+    aligner.add_line(String::from("xyz -->"));
 
     let mut it = aligner.aligned_lines();
     assert_eq!(it.next(), Some(String::from("cat      --> dog")));
@@ -80,6 +103,7 @@ fn mulitcharacter_delimiter() {
     assert_eq!(it.next(), Some(String::from("123      -->456")));
     assert_eq!(it.next(), Some(String::from("         --> árvíztűrő-tükörfúrógép")));
     assert_eq!(it.next(), Some(String::from("         -->")));
+    assert_eq!(it.next(), Some(String::from("xyz      -->")));
     assert_eq!(it.next(), None);
 }
 

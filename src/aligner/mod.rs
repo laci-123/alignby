@@ -18,7 +18,7 @@ impl Aligner {
     pub fn add_line(&mut self, line: String, line_number: usize) {
         let maybe_index = line.find(&self.delimiter);
         if let Some(index) = maybe_index {
-            if index > self.max_line_number {
+            if index > self.max_index {
                 self.max_line_number = line_number;
                 self.max_index = index;
             }
@@ -27,7 +27,7 @@ impl Aligner {
         self.lines.push(Line {
             text: line,
             delimiter_index: maybe_index,
-        })
+        });
     }
 
     pub fn aligned_lines<'a>(&'a self) -> AlignedLinesIterator<'a> {

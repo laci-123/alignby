@@ -26,7 +26,6 @@ impl Aligner {
         }
         self.lines.push(Line {
             text: line,
-            number: line_number,
             delimiter_index: maybe_index,
         })
     }
@@ -69,10 +68,8 @@ impl<'a> Iterator for AlignedLinesIterator<'a> {
 }
 
 
-#[derive(Debug)]
 struct Line {
     text: String,
-    number: usize,
     delimiter_index: Option<usize>,
 }
 

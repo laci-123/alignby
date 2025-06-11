@@ -14,11 +14,11 @@ fn delimiter_not_in_input() {
     // If the delimiter is nowhere in the input
     // then the output is identical to the input.
     let mut aligner = Aligner::new("-");
-    aligner.add_line(String::from("cat dog"), 0);
-    aligner.add_line(String::from("elephant     giraffe"), 1);
-    aligner.add_line(String::from("123456"), 2);
-    aligner.add_line(String::from("árvíztűrő tükörfúrógép"), 3);
-    aligner.add_line(String::from(""), 4);
+    aligner.add_line(String::from("cat dog"));
+    aligner.add_line(String::from("elephant     giraffe"));
+    aligner.add_line(String::from("123456"));
+    aligner.add_line(String::from("árvíztűrő tükörfúrógép"));
+    aligner.add_line(String::from(""));
 
     let mut it = aligner.aligned_lines();
     assert_eq!(it.next(), Some(String::from("cat dog")));
@@ -32,11 +32,11 @@ fn delimiter_not_in_input() {
 #[test]
 fn simple_delimiter() {
     let mut aligner = Aligner::new("-");
-    aligner.add_line(String::from("cat-dog"), 0);
-    aligner.add_line(String::from("elephant -   giraffe"), 1);
-    aligner.add_line(String::from("123 - 456"), 2);
-    aligner.add_line(String::from("- árvíztűrő tükörfúrógép"), 3);
-    aligner.add_line(String::from("-"), 4);
+    aligner.add_line(String::from("cat-dog"));
+    aligner.add_line(String::from("elephant -   giraffe"));
+    aligner.add_line(String::from("123 - 456"));
+    aligner.add_line(String::from("- árvíztűrő tükörfúrógép"));
+    aligner.add_line(String::from("-"));
 
     let mut it = aligner.aligned_lines();
     assert_eq!(it.next(), Some(String::from("cat      -dog")));
@@ -50,11 +50,11 @@ fn simple_delimiter() {
 #[test]
 fn multiple_delimiters() {
     let mut aligner = Aligner::new("-");
-    aligner.add_line(String::from("cat-dog-"), 0);
-    aligner.add_line(String::from("elephant - giraffe - leopard"), 1);
-    aligner.add_line(String::from("123 -- 456"), 2);
-    aligner.add_line(String::from("- árvíztűrő-tükörfúrógép"), 3);
-    aligner.add_line(String::from("--"), 4);
+    aligner.add_line(String::from("cat-dog-"));
+    aligner.add_line(String::from("elephant - giraffe - leopard"));
+    aligner.add_line(String::from("123 -- 456"));
+    aligner.add_line(String::from("- árvíztűrő-tükörfúrógép"));
+    aligner.add_line(String::from("--"));
 
     let mut it = aligner.aligned_lines();
     assert_eq!(it.next(), Some(String::from("cat      -dog-")));
@@ -68,11 +68,11 @@ fn multiple_delimiters() {
 #[test]
 fn mulitcharacter_delimiter() {
     let mut aligner = Aligner::new("-->");
-    aligner.add_line(String::from("cat --> dog"), 0);
-    aligner.add_line(String::from("elephant -->   giraffe"), 1);
-    aligner.add_line(String::from("123-->456"), 2);
-    aligner.add_line(String::from("--> árvíztűrő-tükörfúrógép"), 3);
-    aligner.add_line(String::from("-->"), 4);
+    aligner.add_line(String::from("cat --> dog"));
+    aligner.add_line(String::from("elephant -->   giraffe"));
+    aligner.add_line(String::from("123-->456"));
+    aligner.add_line(String::from("--> árvíztűrő-tükörfúrógép"));
+    aligner.add_line(String::from("-->"));
 
     let mut it = aligner.aligned_lines();
     assert_eq!(it.next(), Some(String::from("cat      --> dog")));
@@ -86,11 +86,11 @@ fn mulitcharacter_delimiter() {
 #[test]
 fn multiple_multicharacter_delimiters() {
     let mut aligner = Aligner::new("<>");
-    aligner.add_line(String::from("cat<>dog<>"), 0);
-    aligner.add_line(String::from("elephant <> giraffe <> leopard"), 1);
-    aligner.add_line(String::from("123 <> 456"), 2);
-    aligner.add_line(String::from("<> árvíztűrő<>tükörfúrógép"), 3);
-    aligner.add_line(String::from("<><>"), 4);
+    aligner.add_line(String::from("cat<>dog<>"));
+    aligner.add_line(String::from("elephant <> giraffe <> leopard"));
+    aligner.add_line(String::from("123 <> 456"));
+    aligner.add_line(String::from("<> árvíztűrő<>tükörfúrógép"));
+    aligner.add_line(String::from("<><>"));
 
     let mut it = aligner.aligned_lines();
     assert_eq!(it.next(), Some(String::from("cat      <>dog<>")));

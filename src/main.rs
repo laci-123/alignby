@@ -9,7 +9,7 @@ fn main() -> ExitCode {
     for (i, maybe_line) in stdin.lines().enumerate() {
         match maybe_line {
             Ok(line) => {
-                aligner.add_line(line, i);
+                aligner.add_line(line);
             },
             Err(err) => {
                 eprintln!("Failed to read stdin at line {}:", i);

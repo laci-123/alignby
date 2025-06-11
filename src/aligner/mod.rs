@@ -2,7 +2,6 @@ pub struct Aligner {
     delimiter: String,
     lines: Vec<Line>,
     max_index: usize,
-    max_line_number: usize,
 }
 
 impl Aligner {
@@ -11,15 +10,13 @@ impl Aligner {
             delimiter: String::from(delimiter),
             lines: Vec::new(),
             max_index: 0,
-            max_line_number: 0
         }
     }
 
-    pub fn add_line(&mut self, line: String, line_number: usize) {
+    pub fn add_line(&mut self, line: String) {
         let maybe_index = line.find(&self.delimiter);
         if let Some(index) = maybe_index {
             if index > self.max_index {
-                self.max_line_number = line_number;
                 self.max_index = index;
             }
             

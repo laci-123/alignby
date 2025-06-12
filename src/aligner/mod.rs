@@ -25,7 +25,7 @@ impl Aligner {
                 let s = self.delimiter.len();
                 line[(index+s)..].find(|c: char| !c.is_whitespace())
                                  .map(|i| index + i + s)
-                // example (delimiter is '::', first non-whitespace after is is 'd'):
+                // example (delimiter is '::', first non-whitespace after it is 'd'):
                 // 
                 // abc::  def
                 // 0123456789

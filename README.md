@@ -20,10 +20,9 @@ def = 3
 g   = 4
 h   =5
 ij  = 6 = 3 + 3
-
 ```
 
-The `--after` flag is useful when the delimiter should stick to left:
+The `--after` flag is useful when the delimiter should stick to the left:
 
 ```
 $ cat definitions.txt

@@ -1,3 +1,6 @@
+use crate::settings::Settings;
+
+
 pub struct Aligner {
     delimiter: String,
     lines: Vec<Line>,
@@ -5,9 +8,9 @@ pub struct Aligner {
 }
 
 impl Aligner {
-    pub fn new(delimiter: &str) -> Self {
+    pub fn new(settings: Settings) -> Self {
         Self {
-            delimiter: String::from(delimiter),
+            delimiter: settings.delimiter,
             lines: Vec::new(),
             max_index: 0,
         }

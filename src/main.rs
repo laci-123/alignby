@@ -3,8 +3,11 @@ use std::process::ExitCode;
 
 
 fn main() -> ExitCode {
+    // Calls process:exit() on incorrect args.
+    let settings = settings::parse_from_cmd_line_args();
+
+    let mut aligner = aligner::Aligner::new(settings);
     let stdin = io::stdin();
-    let mut aligner = aligner::Aligner::new("=");
 
     for (i, maybe_line) in stdin.lines().enumerate() {
         match maybe_line {
@@ -28,3 +31,4 @@ fn main() -> ExitCode {
 
 
 mod aligner;
+mod settings;

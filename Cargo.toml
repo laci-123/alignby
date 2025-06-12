@@ -1,8 +1,12 @@
 [package]
 name = "alignby"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2024"
 description = "A small command line utility to align lines around a given character or pattern."
 
 [dependencies]
 clap = { version = "4.5.40", features = ["derive"] }
+
+[profile.release]
+panic = "abort"
+strip = true

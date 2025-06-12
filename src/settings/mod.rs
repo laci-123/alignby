@@ -5,7 +5,7 @@ use clap::Parser;
 #[derive(Parser)]
 #[command(version, about)]
 pub struct Settings {
-    /// insert padding after the delimiter, not before it
+    /// align on the next non-whitespace character after the delimiter
     #[arg(short, long)]
     pub after: bool,
 

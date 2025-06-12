@@ -124,3 +124,39 @@ fn multiple_multicharacter_delimiters() {
     assert_eq!(it.next(), Some(String::from("         <><>")));
     assert_eq!(it.next(), None);
 }
+
+#[test]
+fn align_after_delimiter() {
+    let mut aligner = Aligner::new(Settings { after: true, delimiter: String::from(":") });
+    aligner.add_line(String::from("cat:dog"));
+    aligner.add_line(String::from("elephant: giraffe leopard"));
+    aligner.add_line(String::from("123:    456"));
+    aligner.add_line(String::from(": árvíztűrő tükörfúrógép"));
+    aligner.add_line(String::from("::"));
+
+    let mut it = aligner.aligned_lines();
+    assert_eq!(it.next(), Some(String::from("cat:      dog")));
+    assert_eq!(it.next(), Some(String::from("elephant: giraffe leopard")));
+    assert_eq!(it.next(), Some(String::from("123:      456")));
+    assert_eq!(it.next(), Some(String::from(":         árvíztűrő tükörfúrógép")));
+    assert_eq!(it.next(), Some(String::from(":         :")));
+    assert_eq!(it.next(), None);
+}
+
+#[test]
+fn align_after_delimiter_multichar() {
+    let mut aligner = Aligner::new(Settings { after: true, delimiter: String::from("->") });
+    aligner.add_line(String::from("cat->dog"));
+    aligner.add_line(String::from("elephant-> giraffe leopard"));
+    aligner.add_line(String::from("123->    456"));
+    aligner.add_line(String::from("-> árvíztűrő tükörfúrógép"));
+    aligner.add_line(String::from("->>"));
+
+    let mut it = aligner.aligned_lines();
+    assert_eq!(it.next(), Some(String::from("cat->      dog")));
+    assert_eq!(it.next(), Some(String::from("elephant-> giraffe leopard")));
+    assert_eq!(it.next(), Some(String::from("123->      456")));
+    assert_eq!(it.next(), Some(String::from("->         árvíztűrő tükörfúrógép")));
+    assert_eq!(it.next(), Some(String::from("->         >")));
+    assert_eq!(it.next(), None);
+}

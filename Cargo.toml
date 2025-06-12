@@ -1,6 +1,6 @@
 [package]
 name = "alignby"
-version = "0.1.0"
+version = "1.0.0"
 edition = "2024"
 description = "A small command line utility to align lines around a given character or pattern."
 

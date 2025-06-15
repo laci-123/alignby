@@ -160,3 +160,17 @@ fn align_after_delimiter_multichar() {
     assert_eq!(it.next(), Some(String::from("->         >")));
     assert_eq!(it.next(), None);
 }
+
+#[test]
+fn multibyte_characters() {
+    let mut aligner = Aligner::new(Settings { after: false, delimiter: String::from("#") });
+    aligner.add_line(String::from("tűzkő # 123"));
+    aligner.add_line(String::from("a # 123"));
+    aligner.add_line(String::from("синий кит # 123"));
+
+    let mut it = aligner.aligned_lines();
+    assert_eq!(it.next(), Some(String::from("tűzkő     # 123")));
+    assert_eq!(it.next(), Some(String::from("a         # 123")));
+    assert_eq!(it.next(), Some(String::from("синий кит # 123")));
+    assert_eq!(it.next(), None);
+}

@@ -5,7 +5,7 @@ pub struct Aligner {
     delimiter: String,
     after: bool,
     lines: Vec<Line>,
-    max_index: usize,
+    max_length: usize,
 }
 
 impl Aligner {
@@ -14,7 +14,7 @@ impl Aligner {
             delimiter: settings.delimiter,
             after: settings.after,
             lines: Vec::new(),
-            max_index: 0,
+            max_length: 0,
         }
     }
 
@@ -37,24 +37,27 @@ impl Aligner {
             }
         });
 
-        if let Some(index) = maybe_index {
-            if index > self.max_index {
-                self.max_index = index;
+        let maybe_length = maybe_index.and_then(|i| num_chars_before_index(&line, i));
+
+        if let Some(length) = maybe_length {
+            if length > self.max_length {
+                self.max_length = length;
             }
         }
 
         self.lines.push(Line {
-            text: line,
             delimiter_index: maybe_index,
+            num_chars_before_delimiter: maybe_length,
+            text: line,
         });
     }
 
     pub fn aligned_lines(self) -> impl Iterator<Item = String> {
         self.lines.into_iter().map(move |line| {
-            if let Some(delimiter_index) = line.delimiter_index {
-                let padding_length = self.max_index - delimiter_index;
-                let first_half     = &line.text[..delimiter_index];
-                let second_half    = &line.text[delimiter_index..];
+            if let Some(length) = line.num_chars_before_delimiter {
+                let padding_length = self.max_length - length;
+                let first_half     = &line.text[..line.delimiter_index.unwrap()];
+                let second_half    = &line.text[line.delimiter_index.unwrap()..];
                 format!("{}{}{}", first_half, " ".repeat(padding_length), second_half)
             }
             else {
@@ -65,9 +68,22 @@ impl Aligner {
 }
 
 
+fn num_chars_before_index(string: &str, index: usize) -> Option<usize> {
+    let mut n = 0;
+    for (byte, _char) in string.char_indices() {
+        if byte == index {
+            return Some(n);
+        }
+        n += 1;
+    }
+    return None;
+}
+
+
 struct Line {
     text: String,
     delimiter_index: Option<usize>,
+    num_chars_before_delimiter: Option<usize>,
 }
 
 

@@ -43,25 +43,35 @@ impl Aligner {
 
         let maybe_length = maybe_index.and_then(|i| num_chars_before_index(&line, i));
 
+        let delimiter =
+        if let Some(index) = maybe_index {
+            Some(Delimiter {
+                index,
+                length: maybe_length.expect("if index is not None then length should not be None either"),
+            })
+        }
+        else {
+            None
+        };
+
+        self.lines.push(Line {
+            text: line,
+            delimiter,
+        });
+
         if let Some(length) = maybe_length {
             if length > self.max_length {
                 self.max_length = length;
             }
         }
-
-        self.lines.push(Line {
-            delimiter_index: maybe_index,
-            num_chars_before_delimiter: maybe_length,
-            text: line,
-        });
     }
 
     pub fn aligned_lines(self) -> impl Iterator<Item = String> {
         self.lines.into_iter().map(move |line| {
-            if let Some(length) = line.num_chars_before_delimiter {
-                let padding_length = self.max_length - length;
-                let first_half     = &line.text[..line.delimiter_index.unwrap()];
-                let second_half    = &line.text[line.delimiter_index.unwrap()..];
+            if let Some(delimiter) = line.delimiter {
+                let padding_length = self.max_length - delimiter.length;
+                let first_half     = &line.text[..delimiter.index];
+                let second_half    = &line.text[delimiter.index..];
                 format!("{}{}{}", first_half, " ".repeat(padding_length), second_half)
             }
             else {
@@ -84,10 +94,15 @@ fn num_chars_before_index(string: &str, index: usize) -> Option<usize> {
 }
 
 
+struct Delimiter {
+    index: usize,
+    length: usize,
+}
+
+
 struct Line {
     text: String,
-    delimiter_index: Option<usize>,
-    num_chars_before_delimiter: Option<usize>,
+    delimiter: Option<Delimiter>,
 }
 
 

@@ -10,6 +10,10 @@ pub struct Aligner {
 
 impl Aligner {
     pub fn new(settings: Settings) -> Self {
+        if settings.delimiter.len() == 0 {
+            // This should be checked when parsing the command line arguments.
+            panic!("delimiter cannot be empty");
+        }
         Self {
             delimiter: settings.delimiter,
             after: settings.after,

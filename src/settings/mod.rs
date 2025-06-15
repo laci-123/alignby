@@ -1,4 +1,5 @@
 use clap::Parser;
+use clap::builder::NonEmptyStringValueParser;
 
 
 #[derive(Debug)]
@@ -10,6 +11,7 @@ pub struct Settings {
     pub after: bool,
 
     /// the string around which to align the lines
+    #[arg(value_parser = NonEmptyStringValueParser::new())]
     pub delimiter: String,
 }
 
